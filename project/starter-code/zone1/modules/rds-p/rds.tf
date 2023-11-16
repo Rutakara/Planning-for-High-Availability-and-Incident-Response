@@ -45,6 +45,7 @@ resource "aws_rds_cluster" "udacity_cluster" {
   db_subnet_group_name     = aws_db_subnet_group.udacity_db_subnet_group.name
   engine_mode              = "provisioned"
   engine_version           = "5.7.mysql_aurora.2.11.2" 
+  backup_retention_period  = 5
   skip_final_snapshot      = true
   storage_encrypted        = false
   depends_on = [aws_rds_cluster_parameter_group.cluster_pg]
@@ -59,7 +60,7 @@ output "db_instance_arn" {
 }
 
 resource "aws_rds_cluster_instance" "udacity_instance" {
-  count                = 1
+  count                = 2
   engine               = "aurora-mysql"
   identifier           = "udacity-db-instance-${count.index}"
   cluster_identifier   = aws_rds_cluster.udacity_cluster.id
